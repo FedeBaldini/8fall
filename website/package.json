@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build && next export",
     "start": "next start",
-    "compil": "tsc",
+    "compile": "tsc",
     "lint": "next lint",
     "test": "jest",
     "deploy": "aws s3 sync out/ s3://8fall.com ",
