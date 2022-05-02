@@ -5,8 +5,6 @@ import "../styles/globals.css";
 
 initializeTranslations();
 
-function Application({ Component, pageProps }: AppProps) {
+export default function Application({ Component, pageProps }: AppProps) {
   return <Component {...pageProps} />;
 }
-
-export default Application;
