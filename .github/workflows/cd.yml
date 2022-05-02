@@ -1,12 +1,11 @@
 # This workflow will do a clean install of node dependencies,
 # build the source code and run tests
 
-name: CI
+name: CD
 
 on:
-  pull_request:
-    branches:
-      - "**"
+  push:
+    branches: [main]
 
 jobs:
   website:
@@ -18,14 +17,20 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           # minimum version supported by our dependencies (Jest)
-          node-version: 14.17
+          node-version: 14.15
 
       - uses: actions/cache@v2
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-2
+
       - run: cd website && yarn install
       - run: cd website && yarn compile
-      - run: cd website && yarn build
       - run: cd website && yarn test
+      - run: cd website && yarn deploy
