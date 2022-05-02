@@ -14,7 +14,7 @@ export function MainMenu({ isOpen }: Props) {
     () =>
       classNames(
         { "open block": isOpen, "closed hidden lg:block": !isOpen },
-        "z-10 top-0 left-0 bg-black absolute w-1/2 lg:static lg:w-auto"
+        "z-10 top-0 left-0 absolute w-1/2 lg:static lg:w-auto"
       ),
     [isOpen]
   );
