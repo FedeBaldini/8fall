@@ -1,8 +1,10 @@
 import type { NextPage } from "next";
+import { Logo } from "../components/Logo";
 
 const Home: NextPage = () => {
   return (
     <main>
+      <Logo />
       <h1 className="text-title">
         Welcome to <a href="https://nextjs.org">Next.js!</a>
       </h1>
