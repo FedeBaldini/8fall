@@ -5,6 +5,7 @@ import { IconByName } from "../../Icon";
 import { LinkWithIcon } from "./LinkWithIcon";
 import { MainMenu } from "./MainMenu";
 import { Logo } from "../../Logo";
+import { ConnectWallet } from "../../ConnectWallet";
 
 export function Header() {
   const [isMenuOpen, , , , toggleMenu] = useBoolean(false);
@@ -31,6 +32,7 @@ export function Header() {
               />
             </div>
             <MainMenu isOpen={isMenuOpen} />
+            <ConnectWallet className="ml-8" />
             <button
               className="p-2 rounded focus:outline-none lg:hidden"
               onClick={() => toggleMenu()}

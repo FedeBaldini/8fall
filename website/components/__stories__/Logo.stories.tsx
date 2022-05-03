@@ -7,4 +7,8 @@ export default {
   component: Logo,
 } as Meta;
 
-export const Standard: Story = () => <Logo />;
+export const Standard: Story = () => (
+  <div className="bg-black">
+    <Logo />
+  </div>
+);
