@@ -14,7 +14,8 @@ export function MainMenu({ isOpen }: Props) {
     () =>
       classNames(
         { "open block": isOpen, "closed hidden lg:block": !isOpen },
-        "z-10 top-0 left-0 absolute w-1/2 lg:static lg:w-auto"
+        "z-10 top-0 left-0 absolute w-1/2 lg:static lg:w-auto",
+        "h-full lg:h-auto"
       ),
     [isOpen]
   );
@@ -23,8 +24,12 @@ export function MainMenu({ isOpen }: Props) {
     <nav className={classList}>
       <ul
         className={classNames(
-          "flex flex-wrap justify-center max-w-xl mx-auto lg:max-w-full lg:justify-start lg:pl-4",
-          "flex-col lg:flex-row"
+          "flex flex-wrap justify-start",
+          "max-w-xl mx-auto lg:max-w-full",
+          "flex-col lg:flex-row",
+          "bg-black lg:bg-transparent",
+          "h-full lg:h-auto",
+          "py-2 pl-2 lg:py-0 lg:pl-4"
         )}
       >
         <li className="m-2 lg:mx-1 xl:my-2 xl:mr-4 xl:ml-0 w">

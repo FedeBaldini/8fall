@@ -32,7 +32,7 @@ export function Header() {
               />
             </div>
             <MainMenu isOpen={isMenuOpen} />
-            <ConnectWallet className="ml-8" />
+            <ConnectWallet className="md:mr-8 lg:ml-8" />
             <button
               className="p-2 rounded focus:outline-none lg:hidden"
               onClick={() => toggleMenu()}

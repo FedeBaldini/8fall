@@ -8,7 +8,7 @@ export function Layout({ children }: WithChildren) {
       <img
         src="background.png"
         alt="8 Fall"
-        className="absolute top-0 right-0 left-0 -z-10"
+        className="absolute top-0 right-0 left-0 -z-10 object-cover h-full md:object-fill md:h-auto"
       />
       <div>{children}</div>
     </main>
