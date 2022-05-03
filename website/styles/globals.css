@@ -8,6 +8,8 @@ html,
 body {
   font-family: "Montserrat", serif;
   color: white;
+  height: 100%;
+  background-color: black;
 }
 
 .text-body {

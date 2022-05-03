@@ -3,14 +3,14 @@ import { Header } from "./Header";
 
 export function Layout({ children }: WithChildren) {
   return (
-    <main>
+    <main className="relative max-w-[120rem] my-0 mx-auto h-screen">
       <Header />
       <img
         src="background.png"
         alt="8 Fall"
-        className="absolute top-0 right-0 left-0 -z-10 object-cover h-full md:object-fill md:h-auto"
+        className="absolute top-0 left-1/2 -translate-x-1/2 -z-1 object-cover h-full md:object-fill md:h-auto"
       />
-      <div>{children}</div>
+      <div className="absolute left-0 right-0 pt-4 px-8">{children}</div>
     </main>
   );
 }
