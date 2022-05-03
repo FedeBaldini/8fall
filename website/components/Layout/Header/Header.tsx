@@ -15,7 +15,7 @@ export function Header() {
     <header>
       <div className="container mx-auto">
         <div className="flex justify-between items-center py-2 px-4 sm:py-2">
-          <div className="flex items-center justify-between flex-1 md:justify-center">
+          <div className="flex items-center justify-between flex-1 md:justify-center z-10">
             <div className="mr-6">
               <Logo />
             </div>
@@ -32,7 +32,7 @@ export function Header() {
               />
             </div>
             <MainMenu isOpen={isMenuOpen} />
-            <ConnectWallet className="ml-8" />
+            <ConnectWallet className="md:mr-8 lg:ml-8" />
             <button
               className="p-2 rounded focus:outline-none lg:hidden"
               onClick={() => toggleMenu()}
