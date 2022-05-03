@@ -5,6 +5,7 @@ import { IconByName } from "../../Icon";
 import { LinkWithIcon } from "./LinkWithIcon";
 import { MainMenu } from "./MainMenu";
 import { Logo } from "../../Logo";
+import { ConnectWallet } from "../../ConnectWallet";
 
 export function Header() {
   const [isMenuOpen, , , , toggleMenu] = useBoolean(false);
@@ -25,22 +26,13 @@ export function Header() {
                 className="mr-4"
               />
               <LinkWithIcon
-                href="https://twitter.com/8Fall"
-                icon="Twitter"
-                className="mr-4"
-              />
-              <LinkWithIcon
                 href="https://www.instagram.com/8fall/"
                 icon="Instagram"
                 className="mr-4"
               />
-              <LinkWithIcon
-                href="https://www.youtube.com/user/8fall"
-                icon="YouTube"
-                className="mr-4"
-              />
             </div>
             <MainMenu isOpen={isMenuOpen} />
+            <ConnectWallet className="ml-8" />
             <button
               className="p-2 rounded focus:outline-none lg:hidden"
               onClick={() => toggleMenu()}

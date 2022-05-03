@@ -16,6 +16,8 @@
   "dependencies": {
     "-": "^0.0.1",
     "@storybook/addon-postcss": "^2.0.0",
+    "@web3-react/core": "^6.1.9",
+    "@web3-react/injected-connector": "^6.0.7",
     "D": "^1.0.0",
     "classnames": "^2.3.1",
     "i18next": "^21.6.16",
@@ -23,7 +25,8 @@
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-i18next": "^11.16.7",
-    "storybook-addon-next-router": "^3.1.1"
+    "storybook-addon-next-router": "^3.1.1",
+    "web3": "^1.7.3"
   },
   "devDependencies": {
     "@babel/core": "^7.17.10",
