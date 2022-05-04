@@ -1,0 +1,24 @@
+{
+  "name": "YOUR COLLECTION NAME #3",
+  "description": "Remember to replace this description",
+  "image": "ipfs://NewUriToReplace/3.png",
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "Pink."
+    },
+    {
+      "trait_type": "Planet",
+      "value": "Planet"
+    },
+    {
+      "trait_type": "Man",
+      "value": "Black"
+    }
+  ],
+  "dna": "fd75011c0e912c45d32dc1f57e56b9e16e2b8888",
+  "edition": 3,
+  "external_url": "https://codecats.xyz",
+  "date": 1651578214583,
+  "compiler": "HashLips Art Engine - codeSTACKr Modified"
+}
