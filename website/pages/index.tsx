@@ -12,17 +12,9 @@ import { Minter } from "../components/Minter";
 import { ABI } from "../config/nft";
 import { IContractDetails, Nullable } from "../utils/types";
 
-interface Props {
-  contractAddress: string;
-  nftPortKey: string;
-}
-console.log(process.env);
-export default function HomePage({ contractAddress, nftPortKey }: Props) {
-  // if (!contractAddress || !nftPortKey) {
-  //   throw new Error(
-  //     "You must provide a valid NEXT_CLIENT_CONTRACT_ADDRESS and NEXT_CLIENT_NFTPORT_KEY values"
-  //   );
-  // }
+export default function HomePage() {
+  const nftPortKey = process.env.NEXT_CLIENT_NFTPORT_KEY!;
+  const contractAddress = process.env.NEXT_CLIENT_CONTRACT_ADDRESS!;
   const { t } = useTranslation();
 
   const [contract, setContract] = useState<Nullable<ethers.Contract>>(null);
