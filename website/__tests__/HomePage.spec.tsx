@@ -131,12 +131,13 @@ describe("pages / HomePage", () => {
     });
 
     it("renders a message when the current user is not in the whitelist", async () => {
-      jest
-        .spyOn(API.contracts, "getDetails")
-        .mockResolvedValue(createContractDetails());
+      jest.spyOn(API.contracts, "getDetails").mockResolvedValue(
+        createContractDetails({
+          presale_whitelisted_addresses: ["whitelistedAccountId"],
+        })
+      );
       mockMintingActive.mockImplementation(() => false);
       mockPresaleActive.mockImplementation(() => true);
-      mockIsWhitelisted.mockImplementation(() => false);
       mockWeb3React.mockImplementation(() => ({
         active: true,
         account: "accountId",
