@@ -15,9 +15,8 @@ jest.mock("next/router", () => ({
 }));
 
 describe("components / Layout / MainMenu", () => {
-  afterAll(() => {
-    jest.resetAllMocks();
-  });
+  afterEach(jest.clearAllMocks);
+  afterAll(jest.resetAllMocks);
 
   it.each([
     ["open", true],
