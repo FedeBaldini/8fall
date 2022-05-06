@@ -84,7 +84,7 @@ export default function HomePage({ contractAddress, nftPortKey }: Props) {
     setIsPresaleMintActive(publicMintActive ? false : presaleMintActive);
 
     setLoading(false);
-  }, [contract, account]);
+  }, [contract, account, nftPortKey]);
 
   useEffect(() => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -92,7 +92,7 @@ export default function HomePage({ contractAddress, nftPortKey }: Props) {
     const contract = new ethers.Contract(contractAddress, ABI, signer);
 
     setContract(contract);
-  }, []);
+  }, [contractAddress]);
 
   useEffect(() => {
     loadContractData();
