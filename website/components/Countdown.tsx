@@ -1,4 +1,4 @@
-import { ReactNode, useMemo } from "react";
+import { ReactNode, useCallback, useMemo } from "react";
 import BaseCountdown, { CountdownRenderProps } from "react-countdown";
 
 import { WithOptionalClassName } from "../utils/types";
@@ -14,46 +14,43 @@ export function Countdown({ date, whenCompleted, className }: Props) {
     return data;
   }
 
-  const renderer = ({
-    days,
-    hours,
-    minutes,
-    seconds,
-    completed,
-  }: CountdownRenderProps) => {
-    if (completed) {
-      return <>{whenCompleted}</>;
-    } else {
-      return (
-        <div className="flex flex-1 justify-center space-x-6">
-          <div className="flex flex-col items-center justify-center">
-            <div className="rounded-lg bg-pink-600 py-4 px-6 text-3xl text-white text-center w-[100px]">
-              {appendZero(days)}
+  const renderer = useCallback(
+    ({ days, hours, minutes, seconds, completed }: CountdownRenderProps) => {
+      if (completed) {
+        return <>{whenCompleted}</>;
+      } else {
+        return (
+          <div className="flex flex-1 justify-center space-x-6">
+            <div className="flex flex-col items-center justify-center">
+              <div className="rounded-lg bg-pink-600 py-4 px-6 text-3xl text-white text-center w-[100px]">
+                {appendZero(days)}
+              </div>
+              <span className="text-pink-600 mt-1">Days</span>
             </div>
-            <span className="text-pink-600 mt-1">Days</span>
-          </div>
-          <div className="flex flex-col items-center justify-center">
-            <div className="rounded-lg bg-pink-600 py-4 px-6 text-3xl text-white text-center w-[100px]">
-              {appendZero(hours)}
+            <div className="flex flex-col items-center justify-center">
+              <div className="rounded-lg bg-pink-600 py-4 px-6 text-3xl text-white text-center w-[100px]">
+                {appendZero(hours)}
+              </div>
+              <span className="text-pink-600 mt-1">Hours</span>
             </div>
-            <span className="text-pink-600 mt-1">Hours</span>
-          </div>
-          <div className="flex flex-col items-center justify-center">
-            <div className="rounded-lg bg-pink-600 py-4 px-6 text-3xl text-white text-center w-[100px]">
-              {appendZero(minutes)}
+            <div className="flex flex-col items-center justify-center">
+              <div className="rounded-lg bg-pink-600 py-4 px-6 text-3xl text-white text-center w-[100px]">
+                {appendZero(minutes)}
+              </div>
+              <span className="text-pink-600 mt-1">Minutes</span>
             </div>
-            <span className="text-pink-600 mt-1">Minutes</span>
-          </div>
-          <div className="flex flex-col items-center justify-center">
-            <div className="rounded-lg bg-pink-600 py-4 px-6 text-3xl text-white text-center w-[100px]">
-              {appendZero(seconds)}
+            <div className="flex flex-col items-center justify-center">
+              <div className="rounded-lg bg-pink-600 py-4 px-6 text-3xl text-white text-center w-[100px]">
+                {appendZero(seconds)}
+              </div>
+              <span className="text-pink-600 mt-1">Seconds</span>
             </div>
-            <span className="text-pink-600 mt-1">Seconds</span>
           </div>
-        </div>
-      );
-    }
-  };
+        );
+      }
+    },
+    []
+  );
 
   const countdown = useMemo(
     () => (
@@ -66,7 +63,7 @@ export function Countdown({ date, whenCompleted, className }: Props) {
         />
       </div>
     ),
-    [date]
+    [date, className, renderer]
   );
 
   return countdown;

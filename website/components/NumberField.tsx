@@ -12,7 +12,7 @@ export function NumberField({ initialValue = 1, className, onChange }: Props) {
 
   useEffect(() => {
     onChange(amount);
-  }, [amount]);
+  }, [amount, onChange]);
 
   function handleDecrement() {
     if (amount <= 1) return;

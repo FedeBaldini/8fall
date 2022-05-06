@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { ethers } from "ethers";
 import { useWeb3React } from "@web3-react/core";
@@ -30,7 +30,7 @@ export default function HomePage() {
 
   const { active, account } = useWeb3React();
 
-  async function loadContractData() {
+  const loadContractData = useCallback(async () => {
     if (!contract) return;
 
     setLoading(true);
@@ -63,7 +63,7 @@ export default function HomePage() {
     setIsPresaleMintActive(publicMintActive ? false : presaleMintActive);
 
     setLoading(false);
-  }
+  }, [contract, account]);
 
   useEffect(() => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -79,7 +79,7 @@ export default function HomePage() {
 
   useEffect(() => {
     loadContractData();
-  }, [contract, account]);
+  }, [loadContractData]);
 
   const mintingCountdownTitle = useMemo(() => {
     if (!isPresaleMintActive && !isPublicMintActive) {
@@ -99,7 +99,7 @@ export default function HomePage() {
         </div>
       );
     }
-  }, [isPresaleMintActive, isPublicMintActive]);
+  }, [isPresaleMintActive, isPublicMintActive, t]);
 
   const mintingCountdown = useMemo(() => {
     if (!isPresaleMintActive && !isPublicMintActive) {

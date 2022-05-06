@@ -105,7 +105,12 @@ export function Minter({
       {transactionUrl && (
         <div className="flex items-start mt-4">
           <span className="text-green-600">{t("mint.transactionSuccess")}</span>
-          <a className="ml-2" href={transactionUrl} target="_blank">
+          <a
+            className="ml-2"
+            href={transactionUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
             {t("mint.checkTransaction")}
           </a>
         </div>
