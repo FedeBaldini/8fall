@@ -7,32 +7,22 @@ import API from "../api";
 import { Layout } from "../components/Layout/Layout";
 import { Countdown } from "../components/Countdown";
 import { Button } from "../components/Button";
-import { IContractDetails, Nullable } from "../utils/types";
 import { Loader } from "../components/Loader";
 import { Minter } from "../components/Minter";
 import { ABI } from "../config/nft";
-
-export function getServerSideProps() {
-  return {
-    props: {
-      contractAddress: process.env.NEXT_CLIENT_CONTRACT_ADDRESS,
-      nftPortKey: process.env.NEXT_CLIENT_NFTPORT_KEY,
-    },
-  };
-}
+import { IContractDetails, Nullable } from "../utils/types";
 
 interface Props {
   contractAddress: string;
   nftPortKey: string;
 }
-
+console.log(process.env);
 export default function HomePage({ contractAddress, nftPortKey }: Props) {
-  if (!contractAddress || !nftPortKey) {
-    throw new Error(
-      "You must provide a valid NEXT_CLIENT_CONTRACT_ADDRESS and NEXT_CLIENT_NFTPORT_KEY values"
-    );
-  }
-
+  // if (!contractAddress || !nftPortKey) {
+  //   throw new Error(
+  //     "You must provide a valid NEXT_CLIENT_CONTRACT_ADDRESS and NEXT_CLIENT_NFTPORT_KEY values"
+  //   );
+  // }
   const { t } = useTranslation();
 
   const [contract, setContract] = useState<Nullable<ethers.Contract>>(null);
