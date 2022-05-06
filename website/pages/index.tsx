@@ -12,7 +12,27 @@ import { Loader } from "../components/Loader";
 import { Minter } from "../components/Minter";
 import { ABI } from "../config/nft";
 
-export default function HomePage() {
+export function getServerSideProps() {
+  return {
+    props: {
+      contractAddress: process.env.NEXT_CLIENT_CONTRACT_ADDRESS,
+      nftPortKey: process.env.NEXT_CLIENT_NFTPORT_KEY,
+    },
+  };
+}
+
+interface Props {
+  contractAddress: string;
+  nftPortKey: string;
+}
+
+export default function HomePage({ contractAddress, nftPortKey }: Props) {
+  if (!contractAddress || !nftPortKey) {
+    throw new Error(
+      "You must provide a valid NEXT_CLIENT_CONTRACT_ADDRESS and NEXT_CLIENT_NFTPORT_KEY values"
+    );
+  }
+
   const { t } = useTranslation();
 
   const [contract, setContract] = useState<Nullable<ethers.Contract>>(null);
@@ -40,7 +60,8 @@ export default function HomePage() {
     if (account) {
       try {
         const contractDetails = await API.contracts.getDetails(
-          contract.address
+          contract.address,
+          nftPortKey
         );
 
         const merkleProofs = contractDetails.merkle_proofs || {};
@@ -68,11 +89,7 @@ export default function HomePage() {
   useEffect(() => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
-    const contract = new ethers.Contract(
-      "0x2A66812e12d2226d402A07Cdb5a86205f4675ca3",
-      ABI,
-      signer
-    );
+    const contract = new ethers.Contract(contractAddress, ABI, signer);
 
     setContract(contract);
   }, []);

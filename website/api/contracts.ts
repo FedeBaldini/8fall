@@ -1,13 +1,14 @@
 import { IContractDetails } from "../utils/types";
 
 export async function getDetails(
-  contractAddress: string
+  contractAddress: string,
+  nftPortKey: string
 ): Promise<IContractDetails> {
   const options = {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "572e850b-6876-456c-a817-40cef2d5b334",
+      Authorization: nftPortKey,
     },
   };
   const query = new URLSearchParams({
