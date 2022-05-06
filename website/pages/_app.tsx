@@ -6,15 +6,6 @@ import Web3 from "web3";
 import { initializeTranslations } from "../i18n/initializeTranslations";
 import "../styles/globals.css";
 
-if (
-  !process.env.NEXT_CLIENT_CONTRACT_ADDRESS ||
-  !process.env.NEXT_CLIENT_NFTPORT_KEY
-) {
-  throw new Error(
-    "You must provide a valid NEXT_CLIENT_CONTRACT_ADDRESS and NEXT_CLIENT_NFTPORT_KEY values"
-  );
-}
-
 initializeTranslations();
 
 export default function Application({ Component, pageProps }: AppProps) {
