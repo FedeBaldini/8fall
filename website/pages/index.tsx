@@ -15,6 +15,7 @@ import { IContractDetails, Nullable } from "../utils/types";
 export default function HomePage() {
   const nftPortKey = process.env.NEXT_CLIENT_NFTPORT_KEY!;
   const contractAddress = process.env.NEXT_CLIENT_CONTRACT_ADDRESS!;
+
   const { t } = useTranslation();
 
   const [contract, setContract] = useState<Nullable<ethers.Contract>>(null);
