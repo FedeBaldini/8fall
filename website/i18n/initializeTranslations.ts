@@ -1,17 +1,17 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
-import it from "./translations/it";
+import en from "./translations/en";
 
 export function initializeTranslations() {
   return i18n.use(initReactI18next).init({
     resources: {
-      it: {
-        translation: it,
+      en: {
+        translation: en,
       },
     },
-    lng: "it",
-    fallbackLng: "it",
+    lng: "en",
+    fallbackLng: "en",
 
     interpolation: {
       escapeValue: false,

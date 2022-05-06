@@ -15,9 +15,8 @@ jest.mock("next/router", () => ({
 }));
 
 describe("components / Layout / MainMenu / MenuItem", () => {
-  afterAll(() => {
-    jest.resetAllMocks();
-  });
+  afterEach(jest.clearAllMocks);
+  afterAll(jest.resetAllMocks);
 
   it("has active class when the current pathname is exactly the href", () => {
     mockPathname = "/exact-path";

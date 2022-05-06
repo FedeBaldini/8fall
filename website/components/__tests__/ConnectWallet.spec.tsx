@@ -35,6 +35,20 @@ describe("components / ConnectWallet", () => {
     expect(screen.queryByText("connect")).not.toBeInTheDocument();
   });
 
+  it("renders the account id when there's one", async () => {
+    const mockActivate = jest.fn();
+    mockWeb3React.mockImplementation(() => ({
+      active: true,
+      account: "accountId",
+      activate: mockActivate,
+      deactivate: jest.fn(),
+    }));
+
+    render(<ConnectWallet />);
+
+    expect(await screen.findByText("accountId")).toBeInTheDocument();
+  });
+
   it("connects a wallet", async () => {
     const mockActivate = jest.fn();
     mockWeb3React.mockImplementation(() => ({
