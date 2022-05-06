@@ -16,13 +16,11 @@ jest.mock("@web3-react/core", () => ({
 
 const mockMintingActive = jest.fn().mockImplementation(() => false);
 const mockPresaleActive = jest.fn().mockImplementation(() => false);
-const mockIsWhitelisted = jest.fn().mockImplementation(() => false);
 jest.mock("ethers", () => ({
   ethers: {
     Contract: jest.fn().mockImplementation(() => ({
       mintingActive: mockMintingActive,
       presaleActive: mockPresaleActive,
-      isWhitelisted: mockIsWhitelisted,
     })),
     providers: {
       Web3Provider: jest
@@ -156,12 +154,13 @@ describe("pages / HomePage", () => {
     });
 
     it("renders a message when the current user is in the whitelist", async () => {
-      jest
-        .spyOn(API.contracts, "getDetails")
-        .mockResolvedValue(createContractDetails());
+      jest.spyOn(API.contracts, "getDetails").mockResolvedValue(
+        createContractDetails({
+          presale_whitelisted_addresses: ["accountId"],
+        })
+      );
       mockMintingActive.mockImplementation(() => false);
       mockPresaleActive.mockImplementation(() => true);
-      mockIsWhitelisted.mockImplementation(() => true);
       mockWeb3React.mockImplementation(() => ({
         active: true,
         account: "accountId",
