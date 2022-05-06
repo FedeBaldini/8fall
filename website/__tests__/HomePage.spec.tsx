@@ -41,9 +41,7 @@ describe("pages / HomePage", () => {
   afterAll(jest.resetAllMocks);
 
   function renderComponent() {
-    render(
-      <HomePage contractAddress="contractAddress" nftPortKey="nftPortKey" />
-    );
+    render(<HomePage />);
   }
 
   it("doesn't render when there are no wallet connected", async () => {
