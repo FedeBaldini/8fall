@@ -49,7 +49,7 @@ export function Countdown({ date, whenCompleted, className }: Props) {
         );
       }
     },
-    []
+    [whenCompleted]
   );
 
   const countdown = useMemo(
