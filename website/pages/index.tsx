@@ -7,31 +7,14 @@ import API from "../api";
 import { Layout } from "../components/Layout/Layout";
 import { Countdown } from "../components/Countdown";
 import { Button } from "../components/Button";
-import { IContractDetails, Nullable } from "../utils/types";
 import { Loader } from "../components/Loader";
 import { Minter } from "../components/Minter";
 import { ABI } from "../config/nft";
+import { IContractDetails, Nullable } from "../utils/types";
 
-export function getServerSideProps() {
-  return {
-    props: {
-      contractAddress: process.env.NEXT_CLIENT_CONTRACT_ADDRESS,
-      nftPortKey: process.env.NEXT_CLIENT_NFTPORT_KEY,
-    },
-  };
-}
-
-interface Props {
-  contractAddress: string;
-  nftPortKey: string;
-}
-
-export default function HomePage({ contractAddress, nftPortKey }: Props) {
-  if (!contractAddress || !nftPortKey) {
-    throw new Error(
-      "You must provide a valid NEXT_CLIENT_CONTRACT_ADDRESS and NEXT_CLIENT_NFTPORT_KEY values"
-    );
-  }
+export default function HomePage() {
+  const nftPortKey = process.env.NEXT_CLIENT_NFTPORT_KEY!;
+  const contractAddress = process.env.NEXT_CLIENT_CONTRACT_ADDRESS!;
 
   const { t } = useTranslation();
 
@@ -84,7 +67,7 @@ export default function HomePage({ contractAddress, nftPortKey }: Props) {
     setIsPresaleMintActive(publicMintActive ? false : presaleMintActive);
 
     setLoading(false);
-  }, [contract, account]);
+  }, [contract, account, nftPortKey]);
 
   useEffect(() => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -92,7 +75,7 @@ export default function HomePage({ contractAddress, nftPortKey }: Props) {
     const contract = new ethers.Contract(contractAddress, ABI, signer);
 
     setContract(contract);
-  }, []);
+  }, [contractAddress]);
 
   useEffect(() => {
     loadContractData();

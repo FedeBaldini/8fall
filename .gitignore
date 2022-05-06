@@ -105,3 +105,5 @@ dist
 
 build
 minter-dapp/build
+
+website/next.config.js
