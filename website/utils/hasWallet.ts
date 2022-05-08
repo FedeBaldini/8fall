@@ -1,3 +1,4 @@
 export function hasWallet() {
-  return Boolean(window.ethereum);
+  if (typeof window !== "undefined") return Boolean(window.ethereum);
+  return false;
 }
