@@ -2,6 +2,7 @@ import { useWeb3React } from "@web3-react/core";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 
+import { hasWallet } from "../../utils";
 import { WithOptionalClassName } from "../../utils/types";
 import { Button } from "../Button";
 import { injectedConnector } from "./injectedConnector";
@@ -38,9 +39,9 @@ export function ConnectWallet({ className }: WithOptionalClassName) {
       </Button>
       <span className="text-xxs">{account}</span>
     </div>
-  ) : (
+  ) : hasWallet() ? (
     <Button className={className} onClick={connect}>
       {t("connect")}
     </Button>
-  );
+  ) : null;
 }
