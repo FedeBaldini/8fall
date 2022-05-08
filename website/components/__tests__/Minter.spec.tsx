@@ -3,6 +3,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import { createContractDetails } from "../../test-utils";
 import { Minter } from "../Minter";
+import { ErrorCode } from "../../utils/types";
 
 const mockedContract = {
   mint: jest.fn(),
@@ -32,6 +33,27 @@ describe("components / Minter", () => {
   });
 
   describe("when pre-sale", () => {
+    it("renders an error when minting fails for insufficient funds", async () => {
+      mockedContract.presaleMint.mockRejectedValue({
+        error: { code: ErrorCode.InsufficientFunds },
+      });
+      render(
+        <Minter
+          contract={mockedContract}
+          contractDetails={createContractDetails()}
+          merkleProof={[]}
+          isPublicMintActive={false}
+          isPresaleMintActive
+        />
+      );
+
+      fireEvent.click(screen.getByText(/mint.title/));
+
+      await waitFor(() =>
+        expect(screen.getByText(/mint.insufficientFunds/)).toBeInTheDocument()
+      );
+    });
+
     it("renders an error when minting fails", async () => {
       mockedContract.presaleMint.mockRejectedValue(new Error());
       render(
@@ -111,6 +133,27 @@ describe("components / Minter", () => {
 
       await waitFor(() =>
         expect(screen.getByText(/mint.transactionFailed/)).toBeInTheDocument()
+      );
+    });
+
+    it("renders an error when minting fails for insufficient funds", async () => {
+      mockedContract.mint.mockRejectedValue({
+        error: { code: ErrorCode.InsufficientFunds },
+      });
+      render(
+        <Minter
+          contract={mockedContract}
+          contractDetails={createContractDetails()}
+          merkleProof={[]}
+          isPresaleMintActive={false}
+          isPublicMintActive
+        />
+      );
+
+      fireEvent.click(screen.getByText(/mint.title/));
+
+      await waitFor(() =>
+        expect(screen.getByText(/mint.insufficientFunds/)).toBeInTheDocument()
       );
     });
 

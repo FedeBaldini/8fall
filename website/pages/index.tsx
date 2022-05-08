@@ -12,10 +12,24 @@ import { Minter } from "../components/Minter";
 import { ABI } from "../config/nft";
 import { IContractDetails, Nullable } from "../utils/types";
 
-export default function HomePage() {
+export async function getStaticProps() {
   const nftPortKey = process.env.NEXT_CLIENT_NFTPORT_KEY!;
   const contractAddress = process.env.NEXT_CLIENT_CONTRACT_ADDRESS!;
 
+  return {
+    props: {
+      nftPortKey,
+      contractAddress,
+    },
+  };
+}
+
+interface Props {
+  nftPortKey: string;
+  contractAddress: string;
+}
+
+export default function HomePage({ nftPortKey, contractAddress }: Props) {
   const { t } = useTranslation();
 
   const [contract, setContract] = useState<Nullable<ethers.Contract>>(null);
@@ -51,8 +65,12 @@ export default function HomePage() {
         const merkleProof = merkleProofs[account] || [];
         setMerkleProof(merkleProof);
 
-        const publicMintStart = new Date(contractDetails.public_mint_start);
-        const presaleMintStart = new Date(contractDetails.presale_mint_start);
+        const publicMintStart = new Date(
+          `${contractDetails.public_mint_start}Z`
+        );
+        const presaleMintStart = new Date(
+          `${contractDetails.presale_mint_start}Z`
+        );
         const isWhitelisted =
           contractDetails.presale_whitelisted_addresses.includes(account);
 

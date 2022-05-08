@@ -21,6 +21,7 @@ export default {
     transactionSuccess: "NFT minted successfully 🚀",
     checkTransaction: "Check the transaction status here",
     transactionFailed: "An error occur while trying to mint your NFT 😢",
+    insufficientFunds: "Insufficient funds to proceed minting NFT 😢",
     countdown: {
       preSaleComingSoon: "<strong>Presale minting</strong> coming soon",
       publicComingSoon: "<strong>Public minting</strong> countdown",
