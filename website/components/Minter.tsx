@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useWeb3React } from "@web3-react/core";
-import { BigNumber, ethers } from "ethers";
+import { BigNumber, ethers, errors } from "ethers";
 
-import { IContractDetails, Nullable } from "../utils/types";
+import {
+  ErrorCode,
+  Exception,
+  IContractDetails,
+  Nullable,
+} from "../utils/types";
 import { Button } from "./Button";
 import { NumberField } from "./NumberField";
 
@@ -28,7 +33,7 @@ export function Minter({
   const [total, setTotal] = useState(0);
 
   const [transactionUrl, setTransactionUrl] = useState<string>();
-  const [hasError, setHasError] = useState<boolean>(false);
+  const [errorCode, setErrorCode] = useState<ErrorCode>();
 
   const { account } = useWeb3React();
 
@@ -38,6 +43,22 @@ export function Minter({
       setTotal(total);
     }
   }, [amount, contractDetails]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (transactionUrl && transactionUrl.trim() !== "") {
+        setTransactionUrl(undefined);
+      }
+    }, 10000);
+  }, [transactionUrl]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (errorCode) {
+        setErrorCode(undefined);
+      }
+    }, 10000);
+  }, [errorCode]);
 
   async function mint() {
     if (contract) {
@@ -52,12 +73,13 @@ export function Minter({
           if (mintTransaction) {
             const url = `https://rinkeby.etherscan.io/tx/${mintTransaction.hash}`;
             setTransactionUrl(url);
-            setHasError(false);
+            setErrorCode(undefined);
           } else {
-            setHasError(true);
+            setErrorCode(ErrorCode.Generic);
           }
-        } catch (exception) {
-          setHasError(true);
+        } catch (_exception) {
+          const exception = _exception as Exception;
+          setErrorCode(exception.error.code);
         }
       } else if (isPresaleMintActive) {
         try {
@@ -72,24 +94,17 @@ export function Minter({
           if (presaleMintTransaction) {
             const url = `https://rinkeby.etherscan.io/tx/${presaleMintTransaction.hash}`;
             setTransactionUrl(url);
-            setHasError(false);
+            setErrorCode(undefined);
           } else {
-            setHasError(true);
+            setErrorCode(ErrorCode.Generic);
           }
-        } catch (exception) {
-          setHasError(true);
+        } catch (_exception) {
+          const exception = _exception as Exception;
+          setErrorCode(exception.error.code);
         }
       }
     }
   }
-
-  useEffect(() => {
-    setTimeout(() => {
-      if (transactionUrl && transactionUrl.trim() !== "") {
-        setTransactionUrl(undefined);
-      }
-    }, 10000);
-  }, [transactionUrl]);
 
   return (
     <div className="flex flex-col">
@@ -115,9 +130,13 @@ export function Minter({
           </a>
         </div>
       )}
-      {hasError && (
+      {errorCode && (
         <div className="flex items-start mt-4">
-          <span className="text-red-700">{t("mint.transactionFailed")}</span>
+          <span className="text-red-700">
+            {errorCode === ErrorCode.InsufficientFunds
+              ? t("mint.insufficientFunds")
+              : t("mint.transactionFailed")}
+          </span>
         </div>
       )}
     </div>
