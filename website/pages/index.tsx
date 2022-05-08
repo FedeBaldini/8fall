@@ -13,8 +13,8 @@ import { ABI } from "../config/nft";
 import { IContractDetails, Nullable } from "../utils/types";
 
 export async function getStaticProps() {
-  const nftPortKey = process.env.NEXT_CLIENT_NFTPORT_KEY!; //"572e850b-6876-456c-a817-40cef2d5b334";
-  const contractAddress = process.env.NEXT_CLIENT_CONTRACT_ADDRESS!; //"0x2A66812e12d2226d402A07Cdb5a86205f4675ca3";
+  const nftPortKey = process.env.NEXT_CLIENT_NFTPORT_KEY!;
+  const contractAddress = process.env.NEXT_CLIENT_CONTRACT_ADDRESS!;
 
   return {
     props: {
