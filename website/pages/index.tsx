@@ -4,13 +4,15 @@ import { ethers } from "ethers";
 import { useWeb3React } from "@web3-react/core";
 
 import API from "../api";
-import { Layout } from "../components/Layout/Layout";
+import { Layout } from "../components/Layout";
+import { Container } from "../components/Container";
 import { Countdown } from "../components/Countdown";
 import { Button } from "../components/Button";
 import { Loader } from "../components/Loader";
 import { Minter } from "../components/Minter";
 import { ABI } from "../config/nft";
 import { IContractDetails, Nullable } from "../utils/types";
+import { hasWallet } from "../utils";
 
 export async function getStaticProps() {
   const nftPortKey = process.env.NEXT_CLIENT_NFTPORT_KEY!;
@@ -37,6 +39,7 @@ export default function HomePage({ nftPortKey, contractAddress }: Props) {
     useState<Nullable<IContractDetails>>(null);
 
   const [isLoading, setLoading] = useState(false);
+  const [metamaskNotInstalled, setMetamaskNotInstalled] = useState(false);
 
   const [isPublicMintActive, setIsPublicMintActive] = useState(false);
   const [isPresaleMintActive, setIsPresaleMintActive] = useState(false);
@@ -88,6 +91,12 @@ export default function HomePage({ nftPortKey, contractAddress }: Props) {
   }, [contract, account, nftPortKey]);
 
   useEffect(() => {
+    if (!hasWallet()) {
+      setMetamaskNotInstalled(true);
+      return;
+    } else {
+      setMetamaskNotInstalled(false);
+    }
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
     const contract = new ethers.Contract(contractAddress, ABI, signer);
@@ -135,25 +144,61 @@ export default function HomePage({ nftPortKey, contractAddress }: Props) {
 
   return (
     <Layout>
+      {metamaskNotInstalled && (
+        <Container>
+          <div className="text-pink-600 text-xl font-bold mb-2">
+            {t("mint.installMetamaskTitle")}
+          </div>
+          {t("mint.installMetamask")}
+        </Container>
+      )}
       {active && (
         <div data-testid="Minter">
           {isLoading ? (
             <Loader />
           ) : (
-            <div className="w-full flex justify-center">
-              <div className="bg-white p-10 rounded-lg shadow-inner shadow-slate-400 text-black text-center min-w-1/3">
-                {mintingCountdownTitle}
-                {mintingCountdown}
+            <Container>
+              {mintingCountdownTitle}
+              {mintingCountdown}
 
-                {isPublicMintActive && (
-                  <>
-                    <div className="text-3xl font-bold mb-4">
-                      {t("mint.public")}
-                    </div>
+              {isPublicMintActive && (
+                <>
+                  <div className="text-3xl font-bold mb-4">
+                    {t("mint.public")}
+                  </div>
 
+                  <div className="flex flex-col">
+                    <div className="mb-4 text-sky-600">{t("mint.canMint")}</div>
+                    <NFTInfo contractDetails={contractDetails} />
+                    <Minter
+                      contract={contract}
+                      contractDetails={contractDetails}
+                      merkleProof={merkleProof}
+                      isPresaleMintActive={isPresaleMintActive}
+                      isPublicMintActive={isPublicMintActive}
+                    />
+                  </div>
+                </>
+              )}
+
+              {isPresaleMintActive && (
+                <>
+                  <div className="text-3xl font-bold mb-4">
+                    {t("mint.preSale")}
+                  </div>
+                  {!isWhitelisted ? (
+                    <>
+                      <div className="mb-2 text-red-700">
+                        {t("mint.notWhitelisted")}
+                      </div>
+                      <Button onClick={() => {}} transparent>
+                        {t("mint.getOnWhitelist")}
+                      </Button>
+                    </>
+                  ) : (
                     <div className="flex flex-col">
                       <div className="mb-4 text-sky-600">
-                        {t("mint.canMint")}
+                        {t("mint.whitelisted")}
                       </div>
                       <NFTInfo contractDetails={contractDetails} />
                       <Minter
@@ -164,48 +209,16 @@ export default function HomePage({ nftPortKey, contractAddress }: Props) {
                         isPublicMintActive={isPublicMintActive}
                       />
                     </div>
-                  </>
-                )}
+                  )}
+                </>
+              )}
 
-                {isPresaleMintActive && (
-                  <>
-                    <div className="text-3xl font-bold mb-4">
-                      {t("mint.preSale")}
-                    </div>
-                    {!isWhitelisted ? (
-                      <>
-                        <div className="mb-2 text-red-700">
-                          {t("mint.notWhitelisted")}
-                        </div>
-                        <Button onClick={() => {}} transparent>
-                          {t("mint.getOnWhitelist")}
-                        </Button>
-                      </>
-                    ) : (
-                      <div className="flex flex-col">
-                        <div className="mb-4 text-sky-600">
-                          {t("mint.whitelisted")}
-                        </div>
-                        <NFTInfo contractDetails={contractDetails} />
-                        <Minter
-                          contract={contract}
-                          contractDetails={contractDetails}
-                          merkleProof={merkleProof}
-                          isPresaleMintActive={isPresaleMintActive}
-                          isPublicMintActive={isPublicMintActive}
-                        />
-                      </div>
-                    )}
-                  </>
-                )}
-
-                {!isPublicMintActive && !isPresaleMintActive && (
-                  <Button onClick={() => {}} transparent>
-                    {t("mint.getOnWhitelist")}
-                  </Button>
-                )}
-              </div>
-            </div>
+              {!isPublicMintActive && !isPresaleMintActive && (
+                <Button onClick={() => {}} transparent>
+                  {t("mint.getOnWhitelist")}
+                </Button>
+              )}
+            </Container>
           )}
         </div>
       )}

@@ -12,17 +12,31 @@ jest.mock("@web3-react/core", () => ({
   useWeb3React: () => mockWeb3React(),
 }));
 
+const mockHasWallet = jest.fn().mockImplementation(() => false);
+jest.mock("../../utils", () => ({
+  hasWallet: () => mockHasWallet(),
+}));
+
 describe("components / ConnectWallet", () => {
   afterEach(jest.clearAllMocks);
   afterAll(jest.resetAllMocks);
 
+  it("doesn't render when no wallet installed", () => {
+    const { container } = render(<ConnectWallet />);
+    expect(container).toBeEmptyDOMElement();
+  });
+
   it("renders with a button to connect when there's no wallet connected", () => {
+    mockHasWallet.mockImplementation(() => true);
+
     render(<ConnectWallet />);
+
     expect(screen.getByText(/connect/)).toBeInTheDocument();
     expect(screen.queryByText(/disconnect/)).not.toBeInTheDocument();
   });
 
   it("renders with a button to disconnect when there's a wallet connected", () => {
+    mockHasWallet.mockImplementation(() => true);
     mockWeb3React.mockImplementation(() => ({
       active: true,
       account: null,
@@ -36,6 +50,7 @@ describe("components / ConnectWallet", () => {
   });
 
   it("renders the account id when there's one", async () => {
+    mockHasWallet.mockImplementation(() => true);
     const mockActivate = jest.fn();
     mockWeb3React.mockImplementation(() => ({
       active: true,
@@ -50,6 +65,7 @@ describe("components / ConnectWallet", () => {
   });
 
   it("connects a wallet", async () => {
+    mockHasWallet.mockImplementation(() => true);
     const mockActivate = jest.fn();
     mockWeb3React.mockImplementation(() => ({
       active: false,
@@ -66,6 +82,7 @@ describe("components / ConnectWallet", () => {
   });
 
   it("disconnects from a wallet", async () => {
+    mockHasWallet.mockImplementation(() => true);
     const mockDeactivate = jest.fn();
     mockWeb3React.mockImplementation(() => ({
       active: true,

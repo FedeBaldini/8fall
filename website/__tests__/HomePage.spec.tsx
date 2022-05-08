@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import API from "../api";
 
+import API from "../api";
 import HomePage from "../pages/index";
 import { createContractDetails } from "../test-utils";
 
@@ -12,6 +12,11 @@ const mockWeb3React = jest.fn().mockImplementation(() => ({
 }));
 jest.mock("@web3-react/core", () => ({
   useWeb3React: () => mockWeb3React(),
+}));
+
+const mockHasWallet = jest.fn().mockImplementation(() => true);
+jest.mock("../utils", () => ({
+  hasWallet: () => mockHasWallet(),
 }));
 
 const mockMintingActive = jest.fn().mockImplementation(() => false);
@@ -46,7 +51,27 @@ describe("pages / HomePage", () => {
     );
   }
 
+  it("renders a message when no wallet installed", async () => {
+    mockHasWallet.mockImplementation(() => false);
+    jest
+      .spyOn(API.contracts, "getDetails")
+      .mockResolvedValue(createContractDetails());
+    mockWeb3React.mockImplementation(() => ({
+      active: false,
+      account: null,
+      activate: jest.fn(),
+      deactivate: jest.fn(),
+    }));
+
+    renderComponent();
+
+    await waitFor(() =>
+      expect(screen.getByText(/mint.installMetamaskTitle/)).toBeInTheDocument()
+    );
+  });
+
   it("doesn't render when there are no wallet connected", async () => {
+    mockHasWallet.mockImplementation(() => true);
     jest
       .spyOn(API.contracts, "getDetails")
       .mockResolvedValue(createContractDetails());
@@ -65,6 +90,7 @@ describe("pages / HomePage", () => {
   });
 
   it("renders the minter when there is a wallet connected", async () => {
+    mockHasWallet.mockImplementation(() => true);
     jest
       .spyOn(API.contracts, "getDetails")
       .mockResolvedValue(createContractDetails());
@@ -84,6 +110,7 @@ describe("pages / HomePage", () => {
 
   describe("when not pre-sale and not public sale", () => {
     it("renders the minter with the info to get whitelisted an pre sale info", async () => {
+      mockHasWallet.mockImplementation(() => true);
       jest
         .spyOn(API.contracts, "getDetails")
         .mockResolvedValue(createContractDetails());
@@ -110,6 +137,7 @@ describe("pages / HomePage", () => {
 
   describe("when pre-sale", () => {
     it("renders the minter with the pre sale info", async () => {
+      mockHasWallet.mockImplementation(() => true);
       jest
         .spyOn(API.contracts, "getDetails")
         .mockResolvedValue(createContractDetails());
@@ -133,6 +161,7 @@ describe("pages / HomePage", () => {
     });
 
     it("renders a message when the current user is not in the whitelist", async () => {
+      mockHasWallet.mockImplementation(() => true);
       jest.spyOn(API.contracts, "getDetails").mockResolvedValue(
         createContractDetails({
           presale_whitelisted_addresses: ["whitelistedAccountId"],
@@ -157,6 +186,7 @@ describe("pages / HomePage", () => {
     });
 
     it("renders a message when the current user is in the whitelist", async () => {
+      mockHasWallet.mockImplementation(() => true);
       jest.spyOn(API.contracts, "getDetails").mockResolvedValue(
         createContractDetails({
           presale_whitelisted_addresses: ["accountId"],
@@ -182,6 +212,7 @@ describe("pages / HomePage", () => {
 
   describe("when public", () => {
     it("renders the minter with the public info", async () => {
+      mockHasWallet.mockImplementation(() => true);
       jest
         .spyOn(API.contracts, "getDetails")
         .mockResolvedValue(createContractDetails());
