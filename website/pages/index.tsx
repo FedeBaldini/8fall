@@ -20,10 +20,16 @@ export async function getStaticProps() {
     props: {
       nftPortKey,
       contractAddress,
-    }, // will be passed to the page component as props
+    },
   };
 }
-export default function HomePage({ nftPortKey, contractAddress }: any) {
+
+interface Props {
+  nftPortKey: string;
+  contractAddress: string;
+}
+
+export default function HomePage({ nftPortKey, contractAddress }: Props) {
   const { t } = useTranslation();
 
   const [contract, setContract] = useState<Nullable<ethers.Contract>>(null);

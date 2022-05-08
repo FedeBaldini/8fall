@@ -79,7 +79,7 @@ export function Minter({
           }
         } catch (_exception) {
           const exception = _exception as Exception;
-          setErrorCode(exception.error.code);
+          setErrorCode(exception.error?.code ?? ErrorCode.Generic);
         }
       } else if (isPresaleMintActive) {
         try {
@@ -100,7 +100,7 @@ export function Minter({
           }
         } catch (_exception) {
           const exception = _exception as Exception;
-          setErrorCode(exception.error.code);
+          setErrorCode(exception.error?.code ?? ErrorCode.Generic);
         }
       }
     }

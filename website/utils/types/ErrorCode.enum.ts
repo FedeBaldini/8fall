@@ -1,4 +1,4 @@
 export enum ErrorCode {
-  Generic = 0,
+  Generic = 1,
   InsufficientFunds = -32000,
 }
