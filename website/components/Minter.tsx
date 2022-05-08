@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useWeb3React } from "@web3-react/core";
-import { BigNumber, ethers, errors } from "ethers";
+import { BigNumber, ethers } from "ethers";
 
 import {
   ErrorCode,
